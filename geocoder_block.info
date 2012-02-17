@@ -1,0 +1,6 @@
+name = Geocoder block
+description = Provides a geocoder block.
+core = 6.x
+package = Whami
+
+dependencies[] = geocoder_cck

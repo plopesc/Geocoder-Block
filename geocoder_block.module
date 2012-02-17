@@ -1,0 +1,52 @@
+<?php 
+/**
+ * 
+* @file
+* This file holds the hooks and main functions for the geocoder_block module.
+*
+* @author Pablo López (plopesc)
+* @ingroup Whami
+*/
+
+/**
+ * Implements hook_block
+ */
+function geocoder_block_block($op = 'list', $delta = 0, $edit = array()) {
+  switch ($op) {
+    case 'list' :
+      $blocks[] = array(
+        'info' => 'Geocoder block',
+        'cache' => BLOCK_NO_CACHE,
+      );
+      return $blocks;
+      break;
+    case 'view' :
+      switch ($delta) {
+        case 0 :
+          $block = array(
+            'subject' => t('Geocoder Block'), 
+            'content' => drupal_get_form('geocoder_block_form'),
+          );
+          break;
+      }
+      return $block;
+  }
+}
+
+function geocoder_block_form() {
+  drupal_add_js(drupal_get_path('module', 'geocoder_block') . '/geocoder_block.js');
+  $form['geocoder_block_geocode_field'] = array(
+    '#title' => t('Search address'),
+    '#type' => 'geocoder_textfield',
+    '#size' => 25,
+    '#weight' => 1,
+    '#default_hook' => 'geocoder_block_default', 
+		'#process_hook' => 'geocoder_block_process',
+  );
+  $form['geocoder_block_geocode_button'] = array(
+    '#type' => 'submit',
+    '#value' => t('Geocode'),
+    '#weight' => 2,
+  );
+  return $form;
+}
